@@ -1,0 +1,409 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0B0C0E;
+  --color-surface: #16181C;
+  --color-ink: #F2F1ED;
+  --color-muted: #9A9691;
+  --color-accent: #C9A15A;
+  --color-line: #26282C;
+
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+/* ===== Base ===== */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+  font-feature-settings: "ss01", "ss02", "cv01";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-accent) 55%, transparent);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+::selection {
+  background-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
+}
+
+/* ===== Typography ===== */
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+
+
+@media (prefers-reduced-motion: reduce) {
+  p {
+    animation: none;
+  }
+}
+
+.text-muted {
+  letter-spacing: -0.01em;
+}
+
+.text-3d {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04),
+    0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* ===== Animations ===== */
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.22; transform: scale(1); }
+  50%      { opacity: 0.38; transform: scale(1.07); }
+}
+
+@keyframes floatUpDown {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-18px); }
+}
+
+@keyframes textDrift {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px); }
+}
+
+@keyframes borderGlow {
+  0%, 100% { border-color: rgba(201, 161, 90, 0.25); }
+  50%      { border-color: rgba(201, 161, 90, 0.55); }
+}
+
+.animate-rise {
+  animation: riseIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ===== Reveal ===== */
+.reveal-base {
+  transition:
+    opacity 1.05s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.05s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1.05s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform, filter;
+}
+
+.reveal-hidden {
+  opacity: 0;
+  transform: translateY(36px);
+  filter: blur(4px);
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+.reveal-scale-hidden {
+  opacity: 0;
+  transform: scale(0.94);
+  filter: blur(4px);
+}
+
+/* ===== 3D Effects ===== */
+.card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.45s ease;
+  will-change: transform;
+}
+
+.card-3d:hover {
+  transform: translateY(-6px) rotateX(5deg) rotateY(-4deg) translateZ(10px);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.55);
+}
+
+.avatar-3d {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.avatar-3d:hover {
+  transform: translateY(-4px) scale(1.08) rotateX(6deg);
+}
+
+.avatar-3d.active {
+  transform: translateY(-3px) scale(1.1);
+}
+
+.avatar-active {
+  animation: borderGlow 2.4s ease-in-out infinite;
+}
+
+.tech-icon {
+  filter: drop-shadow(0 0 10px rgba(201, 161, 90, 0.14));
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), filter 0.4s ease;
+  will-change: transform;
+}
+
+.tech-icon:hover {
+  transform: translateY(-8px) scale(1.12) rotateY(10deg);
+  filter: drop-shadow(0 10px 18px rgba(201, 161, 90, 0.3));
+}
+
+/* ===== Hero Text Split ===== */
+.hero-title {
+  display: inline-block;
+  position: relative;
+  z-index: 10;
+}
+
+.hero-title .letter {
+  display: inline-block;
+  transition: transform 1.7s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 1.4s ease-out,
+              filter 1.4s ease-out;
+  will-change: transform, opacity, filter;
+}
+
+.hero-title:hover .letter {
+  transform: translate(var(--tx), var(--ty)) rotate(var(--r)) scale(var(--s));
+  opacity: 0.5;
+
+}
+
+/* ===== Profile Card ===== */
+.profile-card {
+  position: relative;
+  transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 20;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.profile-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.55);
+  border-color: rgba(201, 161, 90, 0.35);
+}
+
+/* ===== Full-hero profile expand ===== */
+.hero-profile-expand {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+}
+
+/* Subtle gold-tint wash that's always present inside the expand layer.
+   This is what makes the hover effect visible even before a real
+   /profile.jpg has been added — once you add one, the photo (below)
+   fades in above this tint at low opacity. */
+.hero-profile-expand-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse 70% 60% at 50% 35%,
+    rgba(201, 161, 90, 0.16),
+    transparent 70%
+  );
+}
+
+.hero-profile-expand img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  opacity: 0.22;
+  filter: grayscale(0.15) contrast(1.05);
+}
+
+.hero-profile-expand.visible {
+  opacity: 1;
+}
+
+/* Robust "exactly one viewport" height for mobile browsers.
+   100vh on phones includes space the address bar will later hide,
+   causing content to jump/clip; 100dvh (where supported) tracks the
+   actual visible viewport instead. */
+.h-screen-safe {
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* Slightly smaller floating icons on phones/small tablets so the row
+   wraps less aggressively and stays legible without crowding. */
+@media (max-width: 640px) {
+  .tech-icon {
+    transform: scale(0.82);
+  }
+}
+section {
+  position: relative;
+}
+
+section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 100% 80% at 50% 0%,
+    rgba(255, 255, 255, 0.015),
+    transparent 60%
+  );
+  z-index: 0;
+}
+
+section > * {
+  position: relative;
+  z-index: 1;
+}
+/* ===== Glass sections ===== */
+/* ===== Glass sections (blurred — use on short sections only) ===== */
+.glass-blur {
+  position: relative;
+  isolation: isolate;
+  contain: paint;
+}
+
+.glass-blur::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 90% 70% at 50% 0%,
+      rgba(201, 161, 90, 0.07),
+      transparent 65%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.03) 0%,
+      rgba(255, 255, 255, 0.01) 40%,
+      transparent 100%
+    );
+  backdrop-filter: blur(5px) saturate(115%);
+  -webkit-backdrop-filter: blur(5px) saturate(115%);
+}
+
+.glass-blur > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== Glass sections (no blur — use on tall/long-scroll sections) ===== */
+.glass-lite {
+  position: relative;
+  isolation: isolate;
+  contain: paint;
+}
+
+.glass-lite::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 90% 70% at 50% 0%,
+      rgba(201, 161, 90, 0.08),
+      transparent 65%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(22, 24, 28, 0.5) 0%,
+      rgba(22, 24, 28, 0.32) 45%,
+      rgba(22, 24, 28, 0.18) 100%
+    );
+  /* no backdrop-filter — this is the whole point */
+}
+
+.glass-lite > * {
+  position: relative;
+  z-index: 1;
+}
+/* ===== Paragraph drift (only runs while in view) ===== */
+@keyframes textDrift {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+
+.text-drift {
+  animation: textDrift 6s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+.text-drift.in-view {
+  animation-play-state: running;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-drift {
+    animation: none;
+  }
+}
+/* ===== Section-tinted hover (color + depth) ===== */
+.hover-gold,
+.hover-red,
+.hover-blue {
+  transition: color 0.4s ease, text-shadow 0.4s ease;
+}
+
+.hover-gold:hover {
+  color: #E8B65E;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06),
+    0 3px 14px rgba(232, 182, 94, 0.45);
+}
+
+.hover-red:hover {
+  color: #D9534F;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06),
+    0 3px 14px rgba(217, 83, 79, 0.4);
+}
+
+.hover-blue:hover {
+  color: #5B8DEF;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06),
+    0 3px 14px rgba(91, 141, 239, 0.4);
+}
