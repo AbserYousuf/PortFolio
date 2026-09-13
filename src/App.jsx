@@ -506,7 +506,7 @@ export default function App() {
               <a href="mailto:abseryousuf50@gmail.com" aria-label="Email" className="text-muted transition-all duration-300 hover:scale-110 hover:text-accent">
                 <MailIcon className="h-5 w-5" />
               </a>
-              <a href="https://github.com/AbserYousuf" target="_blank" rel="noreferrer" aria-label="GitHub" className="text-muted transition-all duration-300 hover:scale-110 hover:text-accent">
+              <a href="https://github.com/AbserYousuf/AbserYousuf/" target="_blank" rel="noreferrer" aria-label="GitHub" className="text-muted transition-all duration-300 hover:scale-110 hover:text-accent">
                 <GithubIcon className="h-5 w-5" />
               </a>
               <a href="https://www.linkedin.com/in/abser-yousuf-69a56137b " target="_blank" rel="noreferrer" aria-label="LinkedIn" className="text-muted transition-all duration-300 hover:scale-110 hover:text-accent">
