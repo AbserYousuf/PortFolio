@@ -2,13 +2,13 @@
 
 @theme {
   --color-bg: #0B0C0E;
-  --color-surface: #16181C;
+  --color-surface: #141618;
   --color-ink: #F2F1ED;
   --color-muted: #9A9691;
   --color-accent: #C9A15A;
   --color-line: #26282C;
 
-  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-display: 'Syne', sans-serif;
   --font-body: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
 
@@ -19,10 +19,23 @@ html {
 
 body {
   overflow-x: hidden;
+  background-color: var(--color-bg);
+  color: var(--color-ink);
   font-feature-settings: "ss01", "ss02", "cv01";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+/* Soft grain overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 }
 
 ::-webkit-scrollbar {
@@ -32,7 +45,7 @@ body {
   background: var(--color-bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--color-accent) 55%, transparent);
+  background: color-mix(in srgb, var(--color-accent) 50%, transparent);
   border-radius: 99px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -46,55 +59,32 @@ body {
 /* ===== Typography ===== */
 .font-display {
   font-family: var(--font-display);
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  font-weight: 700;
+  letter-spacing: -0.03em;
 }
 
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-  font-weight: 500;
-  letter-spacing: -0.025em;
-  line-height: 1.15;
-  text-wrap: balance;
-}
-
-
-
-@media (prefers-reduced-motion: reduce) {
-  p {
-    animation: none;
-  }
-}
-
-.text-muted {
-  letter-spacing: -0.01em;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
 }
 
 .text-3d {
   text-shadow:
     0 1px 0 rgba(255, 255, 255, 0.04),
-    0 2px 4px rgba(0, 0, 0, 0.4);
+    0 2px 6px rgba(0, 0, 0, 0.45);
 }
 
 /* ===== Animations ===== */
 @keyframes fadein {
-  from { opacity: 0; transform: translateY(6px); }
+  from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes riseIn {
-  from { opacity: 0; transform: translateY(22px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes pulseGlow {
-  0%, 100% { opacity: 0.22; transform: scale(1); }
-  50%      { opacity: 0.38; transform: scale(1.07); }
 }
 
 @keyframes floatUpDown {
   0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-18px); }
+  50%      { transform: translateY(-16px); }
 }
 
 @keyframes textDrift {
@@ -107,23 +97,52 @@ h1, h2, h3, h4 {
   50%      { border-color: rgba(201, 161, 90, 0.55); }
 }
 
-.animate-rise {
-  animation: riseIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+@keyframes floatParticle {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-30px) translateX(15px);
+    opacity: 0.7;
+  }
 }
 
-/* ===== Reveal ===== */
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroAvatarIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ===== Reveal System ===== */
 .reveal-base {
   transition:
-    opacity 1.05s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 1.05s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 1.05s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.9s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform, filter;
 }
 
 .reveal-hidden {
   opacity: 0;
-  transform: translateY(36px);
-  filter: blur(4px);
+  transform: translateY(32px);
+  filter: blur(6px);
 }
 
 .reveal-visible {
@@ -134,240 +153,80 @@ h1, h2, h3, h4 {
 
 .reveal-scale-hidden {
   opacity: 0;
-  transform: scale(0.94);
-  filter: blur(4px);
+  transform: scale(0.92) translateY(20px);
+  filter: blur(6px);
 }
 
-/* ===== 3D Effects ===== */
-.card-3d {
-  transform-style: preserve-3d;
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.45s ease;
-  will-change: transform;
+.reveal-left-hidden {
+  opacity: 0;
+  transform: translateX(-40px);
+  filter: blur(5px);
 }
 
-.card-3d:hover {
-  transform: translateY(-6px) rotateX(5deg) rotateY(-4deg) translateZ(10px);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.55);
+.hero-text-animate {
+  animation: heroFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.avatar-3d {
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform;
+.hero-avatar-animate {
+  animation: heroAvatarIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
 }
 
-.avatar-3d:hover {
-  transform: translateY(-4px) scale(1.08) rotateX(6deg);
+/* ===== Project Cards ===== */
+.project-card {
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.avatar-3d.active {
-  transform: translateY(-3px) scale(1.1);
+.project-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.45);
 }
 
-.avatar-active {
-  animation: borderGlow 2.4s ease-in-out infinite;
+.project-card:hover h3 {
+  color: var(--color-accent);
 }
 
+/* ===== Buttons ===== */
+.btn-motion {
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.btn-motion:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+/* ===== Tech Icons ===== */
 .tech-icon {
-  filter: drop-shadow(0 0 10px rgba(201, 161, 90, 0.14));
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), filter 0.4s ease;
+  filter: drop-shadow(0 0 12px rgba(201, 161, 90, 0.12));
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.4s ease;
   will-change: transform;
 }
 
 .tech-icon:hover {
-  transform: translateY(-8px) scale(1.12) rotateY(10deg);
-  filter: drop-shadow(0 10px 18px rgba(201, 161, 90, 0.3));
+  transform: translateY(-10px) scale(1.14) rotateY(8deg);
+  filter: drop-shadow(0 12px 22px rgba(201, 161, 90, 0.28));
 }
 
-/* ===== Hero Text Split ===== */
-.hero-title {
-  display: inline-block;
-  position: relative;
-  z-index: 10;
+/* ===== Avatar ===== */
+.avatar-3d {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.hero-title .letter {
-  display: inline-block;
-  transition: transform 1.7s cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 1.4s ease-out,
-              filter 1.4s ease-out;
-  will-change: transform, opacity, filter;
+.avatar-3d:hover {
+  transform: translateY(-5px) scale(1.08);
 }
 
-.hero-title:hover .letter {
-  transform: translate(var(--tx), var(--ty)) rotate(var(--r)) scale(var(--s));
-  opacity: 0.5;
-
+.avatar-3d.active {
+  transform: translateY(-4px) scale(1.12);
 }
 
-/* ===== Profile Card ===== */
-.profile-card {
-  position: relative;
-  transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-  z-index: 20;
-  cursor: pointer;
-  overflow: hidden;
+.avatar-active {
+  animation: borderGlow 2.6s ease-in-out infinite;
 }
 
-.profile-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.55);
-  border-color: rgba(201, 161, 90, 0.35);
-}
-
-/* ===== Full-hero profile expand ===== */
-.hero-profile-expand {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-  overflow: hidden;
-}
-
-/* Subtle gold-tint wash that's always present inside the expand layer.
-   This is what makes the hover effect visible even before a real
-   /profile.jpg has been added — once you add one, the photo (below)
-   fades in above this tint at low opacity. */
-.hero-profile-expand-fallback {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background: radial-gradient(
-    ellipse 70% 60% at 50% 35%,
-    rgba(201, 161, 90, 0.16),
-    transparent 70%
-  );
-}
-
-.hero-profile-expand img {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  opacity: 0.22;
-  filter: grayscale(0.15) contrast(1.05);
-}
-
-.hero-profile-expand.visible {
-  opacity: 1;
-}
-
-/* Robust "exactly one viewport" height for mobile browsers.
-   100vh on phones includes space the address bar will later hide,
-   causing content to jump/clip; 100dvh (where supported) tracks the
-   actual visible viewport instead. */
-.h-screen-safe {
-  height: 100vh;
-  height: 100dvh;
-}
-
-/* Slightly smaller floating icons on phones/small tablets so the row
-   wraps less aggressively and stays legible without crowding. */
-@media (max-width: 640px) {
-  .tech-icon {
-    transform: scale(0.82);
-  }
-}
-section {
-  position: relative;
-}
-
-section::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse 100% 80% at 50% 0%,
-    rgba(255, 255, 255, 0.015),
-    transparent 60%
-  );
-  z-index: 0;
-}
-
-section > * {
-  position: relative;
-  z-index: 1;
-}
-/* ===== Glass sections ===== */
-/* ===== Glass sections (blurred — use on short sections only) ===== */
-.glass-blur {
-  position: relative;
-  isolation: isolate;
-  contain: paint;
-}
-
-.glass-blur::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(
-      ellipse 90% 70% at 50% 0%,
-      rgba(201, 161, 90, 0.07),
-      transparent 65%
-    ),
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.03) 0%,
-      rgba(255, 255, 255, 0.01) 40%,
-      transparent 100%
-    );
-  backdrop-filter: blur(5px) saturate(115%);
-  -webkit-backdrop-filter: blur(5px) saturate(115%);
-}
-
-.glass-blur > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* ===== Glass sections (no blur — use on tall/long-scroll sections) ===== */
-.glass-lite {
-  position: relative;
-  isolation: isolate;
-  contain: paint;
-}
-
-.glass-lite::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(
-      ellipse 90% 70% at 50% 0%,
-      rgba(201, 161, 90, 0.08),
-      transparent 65%
-    ),
-    linear-gradient(
-      180deg,
-      rgba(22, 24, 28, 0.5) 0%,
-      rgba(22, 24, 28, 0.32) 45%,
-      rgba(22, 24, 28, 0.18) 100%
-    );
-  /* no backdrop-filter — this is the whole point */
-}
-
-.glass-lite > * {
-  position: relative;
-  z-index: 1;
-}
-/* ===== Paragraph drift (only runs while in view) ===== */
-@keyframes textDrift {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-4px); }
-}
-
+/* ===== Text Drift ===== */
 .text-drift {
-  animation: textDrift 6s ease-in-out infinite;
+  animation: textDrift 7s ease-in-out infinite;
   animation-play-state: paused;
 }
 
@@ -375,35 +234,60 @@ section > * {
   animation-play-state: running;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .text-drift {
-    animation: none;
+/* ===== Section Styling ===== */
+/* ===== Section Styling - Cool Blue ===== */
+.section-dark {
+  background: linear-gradient(
+    180deg,
+    #1e2228 0%,
+    #1a1e24 45%,
+    #161a20 100%
+  );
+}
+
+.section-darker {
+  background: linear-gradient(
+    180deg,
+    #181c22 0%,
+    #14181e 50%,
+    #10141a 100%
+  );
+}
+
+.gold-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 70% 50% at 50% 0%,
+    rgba(201, 161, 90, 0.055),
+    transparent 70%
+  );
+  z-index: 0;
+}
+
+.gold-glow > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== Cursor ===== */
+@media (min-width: 768px) {
+  body {
+    cursor: none;
   }
 }
-/* ===== Section-tinted hover (color + depth) ===== */
-.hover-gold,
-.hover-red,
-.hover-blue {
-  transition: color 0.4s ease, text-shadow 0.4s ease;
-}
 
-.hover-gold:hover {
-  color: #E8B65E;
-  text-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.06),
-    0 3px 14px rgba(232, 182, 94, 0.45);
-}
-
-.hover-red:hover {
-  color: #D9534F;
-  text-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.06),
-    0 3px 14px rgba(217, 83, 79, 0.4);
-}
-
-.hover-blue:hover {
-  color: #5B8DEF;
-  text-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.06),
-    0 3px 14px rgba(91, 141, 239, 0.4);
+/* ===== Reduced motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .text-drift,
+  .reveal-base,
+  .tech-icon,
+  .avatar-3d,
+  .hero-text-animate,
+  .hero-avatar-animate {
+    animation: none !important;
+    transition: none !important;
+  }
 }
